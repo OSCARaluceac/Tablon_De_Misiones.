@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablón del Gremio - HD-2D</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Lora:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="guild-wrapper">
+        <header class="guild-header">
+            <h1 class="pixel-title">// SISTEMA DE ENCARGOS</h1>
+        </header>
+
+        <main class="main-layout">
+            <aside class="guild-sidebar">
+                
+                <section class="control-box profile-area">
+                    <h3 class="pixel-subtitle">PERFIL</h3>
+                    <input type="text" id="nombre-aventurero" placeholder="Tu nombre..." class="pixel-input-small">
+                    <div class="rank-display">
+                        <span class="pixel-subtitle">RANGO:</span>
+                        <div id="selector-rango-av" class="rank-toggle-group">
+                            <button class="rank-dot active" data-rank="D">D</button>
+                            <button class="rank-dot" data-rank="C">C</button>
+                            <button class="rank-dot" data-rank="B">B</button>
+                            <button class="rank-dot" data-rank="A">A</button>
+                            <button class="rank-dot" data-rank="S">S</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="control-box">
+                    <h3 class="pixel-subtitle">BUSCADOR</h3>
+                    <input type="text" id="filtro-texto" placeholder="Buscar misión..." class="pixel-input-small">
+                </section>
+
+                <section class="control-box">
+                    <h3 class="pixel-subtitle">CATEGORÍAS</h3>
+                    <div id="filtro-categorias" class="category-stack">
+                        <button class="cat-toggle active" data-cat="Recolección">💎 Recolección</button>
+                        <button class="cat-toggle active" data-cat="Exploración">🗺️ Exploración</button>
+                        <button class="cat-toggle active" data-cat="Busca y Captura">⛓️ Captura</button>
+                        <button class="cat-toggle active" data-cat="Escolta">🛡️ Escolta</button>
+                        <button class="cat-toggle active" data-cat="Caza">⚔️ Caza</button>
+                    </div>
+                </section>
+            </aside>
+
+            <section class="quest-board">
+                <form id="form-mision" class="wood-panel">
+                    <div class="form-row">
+                        <input type="text" id="input-mision" placeholder="Título de la misión..." required class="pixel-input">
+                    </div>
+                    <div class="form-row">
+                        <select id="select-categoria" class="pixel-select">
+                            <option value="Recolección">Recolección</option>
+                            <option value="Exploración">Exploración</option>
+                            <option value="Busca y Captura">Busca y Captura</option>
+                            <option value="Escolta">Escolta</option>
+                            <option value="Caza">Caza</option>
+                        </select>
+                        <select id="select-rango" class="pixel-select">
+                            <option value="D">Rango D</option>
+                            <option value="C">Rango C</option>
+                            <option value="B">Rango B</option>
+                            <option value="A">Rango A</option>
+                            <option value="S">Rango S</option>
+                        </select>
+                        <button type="submit" class="gold-button">PUBLICAR</button>
+                    </div>
+                </form>
+
+                <div id="lista-misiones" class="parchment-container">
+                    </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

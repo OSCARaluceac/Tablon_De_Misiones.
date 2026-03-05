@@ -1,0 +1,128 @@
+:root {
+    --bg: #0d0a08;
+    --wood: #2a1b0e;
+    --parchment: #dfcfb4;
+    --gold: #d4af37;
+    --pixel-f: 'Press Start 2P', cursive;
+    --serif-f: 'Lora', serif;
+}
+
+body {
+    background: var(--bg);
+    color: #f0e6d2;
+    font-family: var(--serif-f);
+    margin: 0;
+    padding: 2vh;
+    display: flex;
+    justify-content: center;
+}
+
+.guild-wrapper {
+    width: 95vw;
+    max-width: 1300px;
+    border: 6px double var(--gold);
+    background: rgba(20, 15, 10, 0.95);
+    box-shadow: 0 0 50px black;
+}
+
+.guild-header {
+    text-align: center;
+    border-bottom: 2px solid var(--gold);
+    padding: 1rem;
+}
+
+.pixel-title { font-family: var(--pixel-f); font-size: 1.2rem; color: var(--gold); }
+.pixel-subtitle { font-family: var(--pixel-f); font-size: 0.6rem; color: #a09070; display: block; margin-bottom: 8px; }
+
+/* Layout con Proporción Áurea */
+.main-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.618fr;
+    min-height: 80vh;
+}
+
+.guild-sidebar {
+    border-right: 1px solid rgba(212, 175, 55, 0.3);
+    padding: 2rem;
+    background: rgba(0,0,0,0.2);
+}
+
+/* --- Corrección de Perfil --- */
+.profile-area {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; /* Ajustado para mayor comodidad */
+    padding-bottom: 1.618rem;
+}
+
+.rank-display {
+    margin-top: 1.618rem; /* Separación áurea para que no toque el input */
+    padding-top: 1rem;
+    border-top: 1px double rgba(212, 175, 55, 0.2);
+}
+/* --------------------------- */
+
+.control-box { margin-bottom: 2rem; }
+
+.pixel-input-small, .pixel-select, .pixel-input {
+    background: #15100c;
+    border: 1px solid var(--wood);
+    color: var(--parchment);
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: var(--serif-f);
+}
+
+.category-stack { display: flex; flex-direction: column; gap: 8px; }
+.cat-toggle, .rank-dot {
+    background: var(--wood);
+    color: #807060;
+    border: 1px solid #3d2b1a;
+    padding: 9px;
+    cursor: pointer;
+    font-family: var(--pixel-f);
+    font-size: 0.5rem;
+    text-align: left;
+}
+.cat-toggle.active, .rank-dot.active { color: var(--gold); border-color: var(--gold); background: #3d2b1a; }
+
+.rank-toggle-group { display: flex; gap: 5px; margin-top: 10px; }
+.rank-dot { width: 30px; text-align: center; padding: 5px 0; }
+
+.quest-board { padding: 2rem; overflow-y: auto; }
+
+.wood-panel {
+    background: #1f140a;
+    padding: 1.5rem;
+    border: 3px solid #150d07;
+    margin-bottom: 2rem;
+}
+
+.form-row { display: flex; gap: 10px; margin-bottom: 8px; }
+
+.gold-button {
+    background: var(--gold);
+    border: none;
+    font-family: var(--pixel-f);
+    font-size: 0.6rem;
+    padding: 0 20px;
+    cursor: pointer;
+}
+
+.parchment-item {
+    background: var(--parchment);
+    color: #2a1b0e;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.5);
+    border: 1px solid #c5b59a;
+}
+
+@media (max-width: 900px) {
+    .main-layout { grid-template-columns: 1fr; }
+    .guild-sidebar { border-right: none; border-bottom: 1px solid var(--gold); }
+}
