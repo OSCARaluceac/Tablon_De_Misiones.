@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tablón del Gremio - HD-2D</title>
+    <title>Tablón de Misiones del Gremio - HD-2D Clarificado</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Lora:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
 </head>
@@ -11,17 +11,18 @@
 
     <div class="guild-wrapper">
         <header class="guild-header">
-            <h1 class="pixel-title">// SISTEMA DE ENCARGOS</h1>
+            <h1 class="pixel-title">// TABLON DE ENCARGOS OFICIALES</h1>
         </header>
 
         <main class="main-layout">
             <aside class="guild-sidebar">
                 
                 <section class="control-box profile-area">
-                    <h3 class="pixel-subtitle">PERFIL</h3>
+                    <h3 class="pixel-subtitle">PERFIL DE AVENTURERO</h3>
                     <input type="text" id="nombre-aventurero" placeholder="Tu nombre..." class="pixel-input-small">
+                    
                     <div class="rank-display">
-                        <span class="pixel-subtitle">RANGO:</span>
+                        <span class="pixel-subtitle">RANGO ACTUAL</span>
                         <div id="selector-rango-av" class="rank-toggle-group">
                             <button class="rank-dot active" data-rank="D">D</button>
                             <button class="rank-dot" data-rank="C">C</button>
@@ -33,12 +34,12 @@
                 </section>
 
                 <section class="control-box">
-                    <h3 class="pixel-subtitle">BUSCADOR</h3>
-                    <input type="text" id="filtro-texto" placeholder="Buscar misión..." class="pixel-input-small">
+                    <h3 class="pixel-subtitle">BUSCADOR MÁGICO</h3>
+                    <input type="text" id="filtro-texto" placeholder="Buscar encargo..." class="pixel-input-small">
                 </section>
 
                 <section class="control-box">
-                    <h3 class="pixel-subtitle">CATEGORÍAS</h3>
+                    <h3 class="pixel-subtitle">FILTRAR CATEGORÍA</h3>
                     <div id="filtro-categorias" class="category-stack">
                         <button class="cat-toggle active" data-cat="Recolección">💎 Recolección</button>
                         <button class="cat-toggle active" data-cat="Exploración">🗺️ Exploración</button>
@@ -50,10 +51,12 @@
             </aside>
 
             <section class="quest-board">
-                <form id="form-mision" class="wood-panel">
+                
+                <form id="form-mision" class="quest-input-form wood-panel">
                     <div class="form-row">
-                        <input type="text" id="input-mision" placeholder="Título de la misión..." required class="pixel-input">
+                        <input type="text" id="input-mision" placeholder="Nombre de la nueva misión..." required class="pixel-input">
                     </div>
+                    
                     <div class="form-row">
                         <select id="select-categoria" class="pixel-select">
                             <option value="Recolección">Recolección</option>
@@ -62,6 +65,7 @@
                             <option value="Escolta">Escolta</option>
                             <option value="Caza">Caza</option>
                         </select>
+
                         <select id="select-rango" class="pixel-select">
                             <option value="D">Rango D</option>
                             <option value="C">Rango C</option>
@@ -69,12 +73,16 @@
                             <option value="A">Rango A</option>
                             <option value="S">Rango S</option>
                         </select>
-                        <button type="submit" class="gold-button">PUBLICAR</button>
+
+                        <button type="submit" class="pixel-button gold-accent gold-button">PUBLICAR</button>
                     </div>
                 </form>
 
+                <h2 class="pixel-subtitle">MISIONES DISPONIBLES</h2>
+                
                 <div id="lista-misiones" class="parchment-container">
                     </div>
+
             </section>
         </main>
     </div>
