@@ -1,128 +1,102 @@
-// Configuración de Rangos y su valor numérico (D=1, S=5)
-const RANGOS = { 'D': 1, 'C': 2, 'B': 3, 'A': 4, 'S': 5 };
+// --- ESTADO Y PERSISTENCIA ---
+let misiones = JSON.parse(localStorage.getItem('taskflow_misiones')) || [];
+let rangosActivos = new Set(['D', 'C', 'B', 'A', 'S']);
+let categoriasActivas = new Set(['Recolección', 'Exploración', 'Captura', 'Escolta', 'Caza']);
 
-// Estado Global de la aplicación
-let misiones = JSON.parse(localStorage.getItem('gremio_misiones')) || [];
-let miRango = localStorage.getItem('gremio_rango') || 'D'; // Por defecto, Rango D
-let miNombre = localStorage.getItem('gremio_nombre') || '';
-let categoriasActivas = new Set(['Recolección', 'Exploración', 'Busca y Captura', 'Escolta', 'Caza']);
-
-// Selectores del DOM
-const listContainer = document.getElementById('lista-misiones');
-const nameInput = document.getElementById('nombre-aventurero');
-const filtroTextoInput = document.getElementById('filtro-texto');
-
-// Inicialización de la aplicación
-function init() {
-    if(nameInput) nameInput.value = miNombre;
-    
-    // Actualizar la UI del selector de rango aventurero
-    document.querySelectorAll('#selector-rango-av .rank-dot').forEach(btn => {
-        if(btn.dataset.rank === miRango) btn.classList.add('active');
-        else btn.classList.remove('active');
-    });
-    
-    // Renderizar la vista inicial
-    render();
-}
-
-// Persistencia de Nombre Aventurero
-nameInput?.addEventListener('input', (e) => {
-    localStorage.setItem('gremio_nombre', e.target.value);
+// --- TEMA (MODO OSCURO) ---
+const themeToggle = document.getElementById('theme-toggle');
+themeToggle.addEventListener('click', () => {
+    document.documentElement.classList.toggle('dark');
+    localStorage.setItem('task_theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
 });
+if (localStorage.getItem('task_theme') === 'dark') document.documentElement.classList.add('dark');
 
-// Lógica de Filtrado Combinada y Renderizado Eficiente
+// --- RENDERIZADO CON TAILWIND ---
 function render() {
-    if (!listContainer) return; // Seguridad técnico-táctica
-    listContainer.innerHTML = '';
-    
-    // Capturamos el valor del buscador y eliminamos espacios laterales
-    const busquedaTexto = filtroTextoInput ? filtroTextoInput.value.toLowerCase().trim() : '';
+    const list = document.getElementById('lista-misiones');
+    const busqueda = document.getElementById('filtro-texto').value.toLowerCase();
+    list.innerHTML = '';
 
     misiones.forEach(m => {
-        // Lógica de Filtrado Táctico de Rango (Jerarquía S > D solicitado)
-        const rangoMisionNivel = RANGOS[m.rango];
-        const miNivelAventurero = RANGOS[miRango];
-        // Solo misiones de mi nivel o menores. 
-        const cumpleRangoRestriccion = rangoMisionNivel <= miNivelAventurero;
-        
-        // Otros filtros
-        const cumpleCategoriaActiva = categoriasActivas.has(m.categoria);
-        const cumpleTextoBuscador = m.texto.toLowerCase().includes(busquedaTexto);
+        const cumpleRango = rangosActivos.has(m.rango);
+        const cumpleCat = categoriasActivas.has(m.categoria);
+        const cumpleTexto = m.texto.toLowerCase().includes(busqueda);
 
-        // Si cumple TODAS las condiciones, se inyecta en el tablón
-        if (cumpleRangoRestriccion && cumpleCategoriaActiva && cumpleTextoBuscador) {
+        if (cumpleRango && cumpleCat && cumpleTexto) {
             const el = document.createElement('div');
-            el.className = 'parchment-item';
+            // Borde interior decorativo con ring-inset y ring-gold
+            el.className = `p-5 bg-white dark:bg-zinc-800 border border-stone-200 dark:border-stone-700 
+                            relative ring-1 ring-inset ring-gold/20 hover:ring-gold/50 transition-all 
+                            flex justify-between items-center group shadow-sm`;
             
             el.innerHTML = `
-                <div>
-                    <small class="rango-tag">[${m.categoria}] RANGO ${m.rango}</small>
-                    <p class="mision-titulo">${m.texto}</p>
+                <div class="relative z-10">
+                    <span class="font-pixel text-[8px] text-gold dark:text-gold/80 uppercase tracking-tighter">${m.categoria} | RANGO ${m.rango}</span>
+                    <p class="text-lg font-bold text-stone-800 dark:text-stone-100 mt-1">${m.texto}</p>
                 </div>
-                <button onclick="eliminar(${m.id})" class="pixel-button btn-delete rank-dot active boton-eliminar">X</button>
+                <button onclick="eliminar(${m.id})" 
+                    class="opacity-0 group-hover:opacity-100 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white px-3 py-1 font-pixel text-[8px] transition-all">
+                    ELIMINAR
+                </button>
             `;
-            listContainer.appendChild(el);
+            list.appendChild(el);
         }
     });
 }
 
-// Event Listeners para controles de pulsar (HD-2D)
-
-// Buscador
-filtroTextoInput?.addEventListener('input', render);
-
-// Filtros de Categoría
-document.querySelectorAll('.cat-toggle').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const cat = btn.dataset.cat;
-        btn.classList.toggle('active');
-        if (categoriasActivas.has(cat)) categoriasActivas.delete(cat);
-        else categoriasActivas.add(cat);
-        render(); // Refrescar vista
+// --- CONTROLES DINÁMICOS ---
+function init() {
+    // Generar Filtros de Rango (Multi-selección)
+    const rCont = document.getElementById('filtro-rangos');
+    rCont.innerHTML = '';
+    ['D', 'C', 'B', 'A', 'S'].forEach(r => {
+        const btn = document.createElement('button');
+        btn.textContent = r;
+        btn.className = `w-10 h-10 font-pixel text-[10px] border transition-all 
+            ${rangosActivos.has(r) ? 'bg-wood text-white dark:bg-gold border-wood dark:border-gold' : 'bg-transparent text-stone-400 border-stone-300 dark:border-stone-700 opacity-60'}`;
+        btn.onclick = () => {
+            rangosActivos.has(r) ? rangosActivos.delete(r) : rangosActivos.add(r);
+            init();
+        };
+        rCont.appendChild(btn);
     });
-});
 
-// Selector de Rango Aventurero
-document.querySelectorAll('#selector-rango-av .rank-dot').forEach(btn => {
-    btn.addEventListener('click', () => {
-        // Desactivar todos y activar solo este
-        document.querySelectorAll('#selector-rango-av .rank-dot').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        
-        // Actualizar estado y persistencia
-        miRango = btn.dataset.rank;
-        localStorage.setItem('gremio_rango', miRango);
-        
-        // Refrescar vista (importante para aplicar restricción de visibilidad)
-        render();
+    // Generar Filtros de Categoría
+    const cCont = document.getElementById('filtro-categorias');
+    cCont.innerHTML = '';
+    ['Recolección', 'Exploración', 'Captura', 'Escolta', 'Caza'].forEach(c => {
+        const btn = document.createElement('button');
+        btn.textContent = c;
+        btn.className = `text-left p-2 font-pixel text-[9px] transition-all border-l-4 
+            ${categoriasActivas.has(c) ? 'border-gold text-stone-800 dark:text-stone-100 bg-gold/5' : 'border-transparent text-stone-400 opacity-50'}`;
+        btn.onclick = () => {
+            categoriasActivas.has(c) ? categoriasActivas.delete(c) : categoriasActivas.add(c);
+            init();
+        };
+        cCont.appendChild(btn);
     });
-});
+    render();
+}
 
-// Crear Nueva Misión (Formulario)
-document.getElementById('form-mision')?.addEventListener('submit', (e) => {
+// --- EVENTOS DE FORMULARIO ---
+document.getElementById('form-mision').onsubmit = (e) => {
     e.preventDefault();
-    const nueva = {
-        id: Date.now(), // Generar ID único táctico
+    misiones.push({
+        id: Date.now(),
         texto: document.getElementById('input-mision').value,
         categoria: document.getElementById('select-categoria').value,
         rango: document.getElementById('select-rango').value
-    };
-    // Añadir al estado y persistencia
-    misiones.push(nueva);
-    localStorage.setItem('gremio_misiones', JSON.stringify(misiones));
-    
-    // Limpiar formulario y refrescar vista
+    });
+    localStorage.setItem('taskflow_misiones', JSON.stringify(misiones));
     e.target.reset();
-    render();
-});
-
-// Eliminar (Completar) Misión
-window.eliminar = (id) => {
-    misiones = misiones.filter(m => m.id !== id);
-    localStorage.setItem('gremio_misiones', JSON.stringify(misiones));
     render();
 };
 
-// Inicializar cuando el DOM esté cargado 
+window.eliminar = (id) => {
+    misiones = misiones.filter(m => m.id !== id);
+    localStorage.setItem('taskflow_misiones', JSON.stringify(misiones));
+    render();
+};
+
+document.getElementById('filtro-texto').oninput = render;
 document.addEventListener('DOMContentLoaded', init);
