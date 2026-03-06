@@ -1,88 +1,67 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tablón de Misiones del Gremio - HD-2D Clarificado</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Lora:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
+    <title>TaskFlow Gremio - Niko</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Lora:wght@400;700&display=swap" rel="stylesheet">
+    <script src="tailwind-config.js"></script>
 </head>
-<body>
+<body class="bg-parchment-light dark:bg-zinc-950 text-stone-800 dark:text-stone-200 font-serif transition-colors duration-500 min-h-screen p-4 flex justify-center">
 
-    <div class="guild-wrapper">
-        <header class="guild-header">
-            <h1 class="pixel-title">// TABLON DE ENCARGOS OFICIALES</h1>
+    <div class="w-full max-w-7xl border-4 border-wood dark:border-stone-800 bg-parchment dark:bg-zinc-900 shadow-2xl relative">
+        
+        <header class="border-b-2 border-gold/30 p-6 flex justify-between items-center bg-white/40 dark:bg-black/20">
+            <h1 class="font-pixel text-xs md:text-sm text-wood dark:text-gold tracking-widest uppercase">// TaskFlow: Niko Edition</h1>
+            <button id="theme-toggle" class="px-4 py-2 border-2 border-wood dark:border-gold hover:bg-gold hover:text-white transition-all duration-300 font-pixel text-[9px] focus:ring-2 focus:ring-gold/50 outline-none">
+                ALTERNAR TEMA
+            </button>
         </header>
 
-        <main class="main-layout">
-            <aside class="guild-sidebar">
+        <main class="grid grid-cols-1 lg:grid-cols-[1fr_1.618fr] min-h-[80vh]">
+            <aside class="p-8 border-r border-stone-200 dark:border-stone-800 bg-stone-50/30 dark:bg-black/10">
                 
-                <section class="control-box profile-area">
-                    <h3 class="pixel-subtitle">PERFIL DE AVENTURERO</h3>
-                    <input type="text" id="nombre-aventurero" placeholder="Tu nombre..." class="pixel-input-small">
-                    
-                    <div class="rank-display">
-                        <span class="pixel-subtitle">RANGO ACTUAL</span>
-                        <div id="selector-rango-av" class="rank-toggle-group">
-                            <button class="rank-dot active" data-rank="D">D</button>
-                            <button class="rank-dot" data-rank="C">C</button>
-                            <button class="rank-dot" data-rank="B">B</button>
-                            <button class="rank-dot" data-rank="A">A</button>
-                            <button class="rank-dot" data-rank="S">S</button>
+                <section class="mb-10">
+                    <h3 class="font-pixel text-[9px] text-stone-500 mb-4 uppercase">Buscador</h3>
+                    <input type="text" id="filtro-texto" placeholder="Buscar encargo..." 
+                        class="w-full p-3 bg-white dark:bg-zinc-800 border border-stone-300 dark:border-stone-700 focus:border-gold outline-none transition-all shadow-sm">
+                </section>
+
+                <section class="mb-10">
+                    <h3 class="font-pixel text-[9px] text-stone-500 mb-4 uppercase">Filtrar por Rango</h3>
+                    <div id="filtro-rangos" class="flex flex-wrap gap-2">
                         </div>
-                    </div>
                 </section>
 
-                <section class="control-box">
-                    <h3 class="pixel-subtitle">BUSCADOR MÁGICO</h3>
-                    <input type="text" id="filtro-texto" placeholder="Buscar encargo..." class="pixel-input-small">
-                </section>
-
-                <section class="control-box">
-                    <h3 class="pixel-subtitle">FILTRAR CATEGORÍA</h3>
-                    <div id="filtro-categorias" class="category-stack">
-                        <button class="cat-toggle active" data-cat="Recolección">💎 Recolección</button>
-                        <button class="cat-toggle active" data-cat="Exploración">🗺️ Exploración</button>
-                        <button class="cat-toggle active" data-cat="Busca y Captura">⛓️ Captura</button>
-                        <button class="cat-toggle active" data-cat="Escolta">🛡️ Escolta</button>
-                        <button class="cat-toggle active" data-cat="Caza">⚔️ Caza</button>
-                    </div>
+                <section>
+                    <h3 class="font-pixel text-[9px] text-stone-500 mb-4 uppercase">Filtrar por Categoría</h3>
+                    <div id="filtro-categorias" class="flex flex-col gap-2">
+                        </div>
                 </section>
             </aside>
 
-            <section class="quest-board">
-                
-                <form id="form-mision" class="quest-input-form wood-panel">
-                    <div class="form-row">
-                        <input type="text" id="input-mision" placeholder="Nombre de la nueva misión..." required class="pixel-input">
+            <section class="p-8 bg-white/50 dark:bg-zinc-900/30">
+                <form id="form-mision" class="p-6 bg-stone-100 dark:bg-zinc-800 border border-stone-200 dark:border-stone-700 mb-10 shadow-inner">
+                    <div class="mb-4">
+                        <input type="text" id="input-mision" placeholder="Título de la misión..." required 
+                            class="w-full p-4 bg-white dark:bg-zinc-900 border border-stone-300 dark:border-stone-700 focus:border-gold outline-none font-bold text-lg">
                     </div>
-                    
-                    <div class="form-row">
-                        <select id="select-categoria" class="pixel-select">
-                            <option value="Recolección">Recolección</option>
-                            <option value="Exploración">Exploración</option>
-                            <option value="Busca y Captura">Busca y Captura</option>
-                            <option value="Escolta">Escolta</option>
-                            <option value="Caza">Caza</option>
+                    <div class="flex flex-wrap gap-3">
+                        <select id="select-categoria" class="flex-1 p-2 bg-white dark:bg-zinc-900 border border-stone-300 dark:border-stone-700 outline-none cursor-pointer">
+                            <option>Recolección</option><option>Exploración</option><option>Captura</option><option>Escolta</option><option>Caza</option>
                         </select>
-
-                        <select id="select-rango" class="pixel-select">
-                            <option value="D">Rango D</option>
-                            <option value="C">Rango C</option>
-                            <option value="B">Rango B</option>
-                            <option value="A">Rango A</option>
-                            <option value="S">Rango S</option>
+                        <select id="select-rango" class="p-2 bg-white dark:bg-zinc-900 border border-stone-300 dark:border-stone-700 outline-none cursor-pointer">
+                            <option>D</option><option>C</option><option>B</option><option>A</option><option>S</option>
                         </select>
-
-                        <button type="submit" class="pixel-button gold-accent gold-button">PUBLICAR</button>
+                        <button type="submit" class="bg-gold text-white px-8 py-2 font-pixel text-[10px] hover:scale-105 active:scale-95 transition-all shadow-md">
+                            PUBLICAR
+                        </button>
                     </div>
                 </form>
 
-                <h2 class="pixel-subtitle">MISIONES DISPONIBLES</h2>
-                
-                <div id="lista-misiones" class="parchment-container">
+                <div id="lista-misiones" class="space-y-4">
                     </div>
-
             </section>
         </main>
     </div>
